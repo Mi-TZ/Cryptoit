@@ -1,0 +1,6 @@
+io/flutter/plugins/GeneratedPluginRegistrant.java
+ io.flutter.plugins.GeneratedPluginRegistrant
+com/udmitz/cryptoo/BuildConfig.java
+ com.udmitz.cryptoo.BuildConfig
+com/udmitz/cryptoo/MainActivity.java
+ com.udmitz.cryptoo.MainActivity

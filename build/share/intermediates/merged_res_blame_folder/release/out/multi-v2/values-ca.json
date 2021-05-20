@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\MiTZ\\AndroidStudioProjects\\cryptoo\\build\\share\\intermediates\\res\\merged\\release\\values-ca\\values-ca.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\MiTZ\\.gradle\\caches\\transforms-2\\files-2.1\\3975ffd70914deb17405b14313b8e4ba\\core-1.3.1\\res\\values-ca\\values-ca.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\MiTZ\\AndroidStudioProjects\\cryptoo\\build\\share\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-ca\\values-ca.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\MiTZ\\.gradle\\caches\\transforms-2\\files-2.1\\3975ffd70914deb17405b14313b8e4ba\\core-1.3.1\\res\\values-ca\\values-ca.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}
