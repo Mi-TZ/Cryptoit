@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\MiTZ\\AndroidStudioProjects\\cryptoo\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-fa\\values-fa.xml",
+            "outputFile": "C:\\Users\\UD\\AndroidStudioProjects\\Cryptoit\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-fa\\values-fa.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\MiTZ\\.gradle\\caches\\transforms-2\\files-2.1\\3975ffd70914deb17405b14313b8e4ba\\core-1.3.1\\res\\values-fa\\values-fa.xml",
+                    "source": "C:\\Users\\UD\\.gradle\\caches\\transforms-2\\files-2.1\\3975ffd70914deb17405b14313b8e4ba\\core-1.3.1\\res\\values-fa\\values-fa.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

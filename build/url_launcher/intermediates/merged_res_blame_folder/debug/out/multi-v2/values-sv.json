@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\MiTZ\\AndroidStudioProjects\\cryptoo\\build\\url_launcher\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sv\\values-sv.xml",
+            "outputFile": "C:\\Users\\UD\\AndroidStudioProjects\\Cryptoit\\build\\url_launcher\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sv\\values-sv.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\MiTZ\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-sv\\values-sv.xml",
+                    "source": "C:\\Users\\UD\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-sv\\values-sv.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -16,10 +16,10 @@
             ]
         },
         {
-            "outputFile": "C:\\Users\\MiTZ\\AndroidStudioProjects\\cryptoo\\build\\url_launcher\\intermediates\\res\\merged\\debug\\values-sv\\values-sv.xml",
+            "outputFile": "C:\\Users\\UD\\AndroidStudioProjects\\Cryptoit\\build\\url_launcher\\intermediates\\res\\merged\\debug\\values-sv\\values-sv.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\MiTZ\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-sv\\values-sv.xml",
+                    "source": "C:\\Users\\UD\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-sv\\values-sv.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
