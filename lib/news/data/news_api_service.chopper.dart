@@ -1,3 +1,5 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'news_api_service.dart';
 
 // **************************************************************************
@@ -13,10 +15,11 @@ class _$NewsApiService extends NewsApiService {
   final definitionType = NewsApiService;
 
   Future<Response> getNews(
-      {String q = "bitcoin",
-        String from = "2020-10-27",
-        String sort = "publishedAt",
-        String apiKey = "b51ea2d0b00346969c1e8e0bf95591d1"}) {
+      {String q = "tesla",
+      String from = "2021-05-21",
+      String sort = "publishedAt",
+      // ignore: invalid_override_different_default_values_named
+      String apiKey = "76602acb8dd54507881b7ba66b93db76",}) {
     final $url = '/';
     final Map<String, dynamic> $params = {
       'q': q,

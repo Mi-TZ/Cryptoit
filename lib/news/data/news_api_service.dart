@@ -1,3 +1,4 @@
+
 import 'package:chopper/chopper.dart';
 
 
@@ -8,15 +9,15 @@ abstract class NewsApiService extends ChopperService{
 
   @Get(path: "/")
   Future<Response> getNews({
-    @Query("q") String q = "bitcoin",
-    @Query("from") String from = "2020-10-27",
+    @Query("q") String q = "tesla",
+    @Query("from") String from = "2021-05-21",
     @Query("sortBy") String sort = "publishedAt",
-    @Query("apiKey") String apiKey = "b51ea2d0b00346969c1e8e0bf95591d1",
+    @Query("apiKey") String apiKey = "76602acb8dd54507881b7ba66b93db76",
   });
 
   static NewsApiService create(){
 
-    final client = ChopperClient(baseUrl: "https://newsapi.org/v2/everything",
+    final client = ChopperClient(baseUrl: "http://newsapi.org/v2/everything?language=en",
         services: [
           _$NewsApiService(),
         ],

@@ -20,7 +20,7 @@ class _newsState extends State<news> {
     var size = MediaQuery.of(context).size;
 
     /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
+    final double itemHeight = 225;
     final double itemWidth = size.width / 2;
 
     return SafeArea(
@@ -88,14 +88,33 @@ class _newsState extends State<news> {
 
           }
 
+          // return  GridView.count(
+          //     shrinkWrap: true,
+          //     primary: false,
+          //     padding: const EdgeInsets.all(3),
+          //     crossAxisSpacing: 10,
+          //     mainAxisSpacing: 10,
+          //     crossAxisCount: 1,
+          //     children: articles
+          // );
+
+          // return Container(
+          //   height: 500,
+          //   color: Colors.blueGrey,
+          //   child: ListView(
+          //     children: articles,
+          //   )
+          // );
+
           return  GridView.count(
               shrinkWrap: true,
               primary: false,
-              padding: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(10),
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               crossAxisCount: 1,
               scrollDirection: Axis.vertical,
+              childAspectRatio: (itemWidth / itemHeight) * 3.5,
               children: articles
           );
 
