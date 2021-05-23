@@ -94,7 +94,6 @@ class _newsState extends State<news> {
               padding: const EdgeInsets.all(3),
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
-              childAspectRatio: (itemWidth / itemHeight) * 006.0,
               crossAxisCount: 1,
               scrollDirection: Axis.vertical,
               children: articles
@@ -111,7 +110,6 @@ class _newsState extends State<news> {
               padding: const EdgeInsets.all(10),
               crossAxisSpacing: 25,
               mainAxisSpacing: 25,
-              childAspectRatio: (itemWidth / itemHeight) * 1.9,
               crossAxisCount: 1,
               scrollDirection: Axis.vertical,
               children: [
