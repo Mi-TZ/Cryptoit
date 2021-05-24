@@ -15,7 +15,7 @@ class _$NewsApiService extends NewsApiService {
   final definitionType = NewsApiService;
 
   Future<Response> getNews(
-      {String q = "tesla",
+      {String q = "cryptocurrency",
       String from = "2021-05-21",
       String sort = "publishedAt",
       // ignore: invalid_override_different_default_values_named

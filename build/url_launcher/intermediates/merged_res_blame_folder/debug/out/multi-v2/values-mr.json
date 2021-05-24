@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\UD\\AndroidStudioProjects\\Cryptoit\\build\\url_launcher\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-mr\\values-mr.xml",
+            "outputFile": "C:\\Users\\MiTZ\\AndroidStudioProjects\\cryptoo\\build\\url_launcher\\intermediates\\res\\merged\\debug\\values-mr\\values-mr.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\UD\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-mr\\values-mr.xml",
+                    "source": "C:\\Users\\MiTZ\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-mr\\values-mr.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -16,10 +16,10 @@
             ]
         },
         {
-            "outputFile": "C:\\Users\\UD\\AndroidStudioProjects\\Cryptoit\\build\\url_launcher\\intermediates\\res\\merged\\debug\\values-mr\\values-mr.xml",
+            "outputFile": "C:\\Users\\MiTZ\\AndroidStudioProjects\\cryptoo\\build\\url_launcher\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-mr\\values-mr.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\UD\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-mr\\values-mr.xml",
+                    "source": "C:\\Users\\MiTZ\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-mr\\values-mr.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

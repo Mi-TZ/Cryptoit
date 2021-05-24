@@ -9,13 +9,13 @@ import '../main.dart';
 
 class TransactionSheet extends StatefulWidget {
   TransactionSheet(
-      this.loadPortfolio,
-      this.marketListData, {
-        Key key,
-        this.editMode: false,
-        this.snapshot,
-        this.symbol,
-      }) : super(key: key);
+    this.loadPortfolio,
+    this.marketListData, {
+    Key key,
+    this.editMode: false,
+    this.snapshot,
+    this.symbol,
+  }) : super(key: key);
 
   final Function loadPortfolio;
   final List marketListData;
@@ -106,14 +106,15 @@ class TransactionSheetState extends State<TransactionSheet> {
 
   _makeEpoch() {
     epochDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
-        pickedTime.hour, pickedTime.minute)
+            pickedTime.hour, pickedTime.minute)
         .millisecondsSinceEpoch;
   }
 
   _checkValidSymbol(String inputSymbol) async {
     if (symbolList == null || symbolList.isEmpty) {
       symbolList = [];
-      widget.marketListData.forEach((value) => symbolList.add(value["CoinInfo"]["Name"]));
+      widget.marketListData
+          .forEach((value) => symbolList.add(value["CoinInfo"]["Name"]));
     }
 
     if (symbolList.contains(inputSymbol.toUpperCase())) {
@@ -336,7 +337,7 @@ class TransactionSheetState extends State<TransactionSheet> {
     _notesController.text = widget.snapshot["notes"];
 
     pickedDate =
-    new DateTime.fromMillisecondsSinceEpoch(widget.snapshot["time_epoch"]);
+        new DateTime.fromMillisecondsSinceEpoch(widget.snapshot["time_epoch"]);
     pickedTime = new TimeOfDay.fromDateTime(pickedDate);
   }
 
@@ -357,76 +358,123 @@ class TransactionSheetState extends State<TransactionSheet> {
   @override
   Widget build(BuildContext context) {
     validColor = Theme.of(context).textTheme.body2.color;
-    return new Container(
-        decoration: new BoxDecoration(
-          border: new Border(
-              top: new BorderSide(color: Theme.of(context).bottomAppBarColor)),
-          color: Theme.of(context).primaryColor,
-        ),
-        padding: const EdgeInsets.only(
-            top: 8.0, bottom: 8.0, right: 16.0, left: 16.0),
-        child: new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
+    return SafeArea(
+      child: Scaffold(
+        body: new Container(
+          alignment: Alignment.topLeft,
+            height: MediaQuery.of(context).size.height ,
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                colors: [
+                  const Color(0xFFFAFAFA),
+                  const Color(0xFFe7eff9),
+                ],
+              ),
+              border: new Border(
+                  top: new BorderSide(
+                      color: Theme.of(context).bottomAppBarColor)),
+              color: Theme.of(context).primaryColor,
+            ),
+            padding: const EdgeInsets.only(
+                top: 45.0, bottom: 8.0, right: 16.0, left: 26.0),
+            child:
+                new Row(mainAxisAlignment: MainAxisAlignment.start, children: <
+                    Widget>[
               new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-//                    new Container(
-//                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-//                      child: new Text(widget.editMode ? "Edit Transaction" : "Add Transaction", style: Theme.of(context).textTheme.body2.apply(fontSizeFactor: 1.2, fontWeightDelta: 2))
-//                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.025),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 1,
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Add Transaction',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 35,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.019),
                     new Row(
                       children: <Widget>[
-                        new Text("Buy",
-                            style: Theme.of(context).textTheme.caption),
+                        new Text(
+                          "Buy",
+                          style: TextStyle(fontSize: 30,color: Colors.black54),
+                        ),
                         new Radio(
                             value: 0,
                             groupValue: radioValue,
                             onChanged: _handleRadioValueChange,
-                            activeColor: Theme.of(context).buttonColor),
-                        new Text("Sell",
-                            style: Theme.of(context).textTheme.caption),
+                            activeColor: Colors.green),
+                        new Text(
+                          "Sell",
+                          style: TextStyle(fontSize: 30,color: Colors.black54),
+                        ),
                         new Radio(
                             value: 1,
                             groupValue: radioValue,
                             onChanged: _handleRadioValueChange,
-                            activeColor: Theme.of(context).buttonColor),
+                            activeColor: Colors.redAccent),
                         new Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 6.0)),
-                        new GestureDetector(
-                          onTap: () => _selectDate(),
-                          child: new Text(
-                              pickedDate.month.toString() +
-                                  "/" +
-                                  pickedDate.day.toString() +
-                                  "/" +
-                                  pickedDate.year.toString().substring(2),
-                              style: Theme.of(context).textTheme.button),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6.0, vertical: 10)),
+                      ],
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.025),
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            Text('Date : ',style: TextStyle(fontSize: 22,color: Colors.black54),),
+                            new GestureDetector(
+                              onTap: () => _selectDate(),
+                              child: new Text(
+                                  pickedDate.month.toString() +
+                                      "/" +
+                                      pickedDate.day.toString() +
+                                      "/" +
+                                      pickedDate.year.toString().substring(2),
+                                  style: TextStyle(fontSize: 16,color: Colors.black54)),
+                            ),
+                          ],
                         ),
-                        new Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 4.0)),
+                      ],
+                    ),
+                    new Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0)),
+
+                    Row(
+                      children: [
+                        Text('Time : ',style: TextStyle(fontSize: 22,color: Colors.black54)),
                         new GestureDetector(
                           onTap: () => _selectTime(),
                           child: new Text(
                             (pickedTime.hourOfPeriod == 0
-                                ? "12"
-                                : pickedTime.hourOfPeriod.toString()) +
+                                    ? "12"
+                                    : pickedTime.hourOfPeriod.toString()) +
                                 ":" +
                                 (pickedTime.minute > 9
                                     ? pickedTime.minute.toString()
                                     : "0" + pickedTime.minute.toString()) +
                                 (pickedTime.hour >= 12 ? "PM" : "AM"),
-                            style: Theme.of(context).textTheme.button,
+                            style: TextStyle(fontSize: 16,color: Colors.black54),
                           ),
                         ),
-                        new Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 6.0)),
                       ],
                     ),
+                    new Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0)),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.025),
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -435,7 +483,6 @@ class TransactionSheetState extends State<TransactionSheet> {
                           padding: const EdgeInsets.only(right: 4.0),
                           child: new TextField(
                             controller: _symbolController,
-                            autofocus: true,
                             autocorrect: false,
                             textCapitalization: TextCapitalization.characters,
                             onChanged: _checkValidSymbol,
@@ -444,13 +491,21 @@ class TransactionSheetState extends State<TransactionSheet> {
                             style: Theme.of(context)
                                 .textTheme
                                 .body2
-                                .apply(color: symbolTextColor),
+                                .apply(color: Colors.black54),
                             decoration: new InputDecoration(
-                              border: InputBorder.none,
+                              labelText: "Enter Coin",
+                              fillColor: Colors.black54,
                               hintText: "Symbol",
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(25.0),
+                              ),
+                              //fillColor: Colors.green
+                            ),
+
                             ),
                           ),
-                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.025),
                         new Container(
                           width: MediaQuery.of(context).size.width * 0.2,
                           padding: const EdgeInsets.only(right: 4.0),
@@ -465,13 +520,22 @@ class TransactionSheetState extends State<TransactionSheet> {
                                 .textTheme
                                 .body2
                                 .apply(color: quantityTextColor),
-                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+                            keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
                             decoration: new InputDecoration(
-                              border: InputBorder.none,
+                              labelText: "Quantity",
+                              fillColor: Colors.black54,
                               hintText: "Quantity",
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(25.0),
+                              ),
+                              //fillColor: Colors.green
                             ),
                           ),
                         ),
+
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.025),
                         new Container(
                           width: MediaQuery.of(context).size.width * 0.3,
                           padding: const EdgeInsets.only(right: 4.0),
@@ -486,10 +550,15 @@ class TransactionSheetState extends State<TransactionSheet> {
                                 .textTheme
                                 .body2
                                 .apply(color: priceTextColor),
-                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
                             decoration: new InputDecoration(
-                                border: InputBorder.none,
+                                labelText: "Price",
+                                fillColor: Colors.black54,
                                 hintText: "Price",
+                                border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(25.0),
+                                ),
                                 prefixText: "\$",
                                 prefixStyle: Theme.of(context)
                                     .textTheme
@@ -499,52 +568,59 @@ class TransactionSheetState extends State<TransactionSheet> {
                         )
                       ],
                     ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.025),
+
                     new Row(
                       children: <Widget>[
-                        new Container(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          child: new PopupMenuButton(
-                            itemBuilder: (BuildContext context) {
-                              List<PopupMenuEntry<dynamic>> options = [
-                                new PopupMenuItem(
-                                  child: new Text("Aggregated"),
-                                  value: "CCCAGG",
-                                ),
-                              ];
-                              if (exchangesList != null &&
-                                  exchangesList.isEmpty != true) {
-                                options.add(new PopupMenuDivider());
-                                exchangesList.forEach(
-                                        (exchange) => options.add(new PopupMenuItem(
-                                      child: new Text(exchange),
-                                      value: exchange,
-                                    )));
-                              }
-                              return options;
-                            },
-                            onSelected: (selected) {
-                              setState(() {
-                                exchange = selected;
-                                if (selected == "CCCAGG") {
-                                  _exchangeController.text = "Aggregated";
-                                } else {
-                                  _exchangeController.text = selected;
+                        Padding(
+                          padding: const EdgeInsets.only(left:11.0),
+                          child: new Container(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            child: new PopupMenuButton(
+                              itemBuilder: (BuildContext context) {
+                                List<PopupMenuEntry<dynamic>> options = [
+                                  new PopupMenuItem(
+                                    child: new Text("Aggregated"),
+                                    value: "CCCAGG",
+                                  ),
+                                ];
+                                if (exchangesList != null &&
+                                    exchangesList.isEmpty != true) {
+                                  options.add(new PopupMenuDivider());
+                                  exchangesList.forEach(
+                                      (exchange) => options.add(new PopupMenuItem(
+                                            child: new Text(exchange),
+                                            value: exchange,
+                                          )));
                                 }
-                                FocusScope.of(context)
-                                    .requestFocus(_notesFocusNode);
-                              });
-                            },
-                            child: new Text(
-                              _exchangeController.text == ""
-                                  ? "Exchange"
-                                  : _exchangeController.text,
-                              style: Theme.of(context).textTheme.body2.apply(
-                                  color: _exchangeController.text == ""
-                                      ? Theme.of(context).hintColor
-                                      : validColor),
+                                return options;
+                              },
+                              onSelected: (selected) {
+                                setState(() {
+                                  exchange = selected;
+                                  if (selected == "CCCAGG") {
+                                    _exchangeController.text = "Aggregated";
+                                  } else {
+                                    _exchangeController.text = selected;
+                                  }
+                                  FocusScope.of(context)
+                                      .requestFocus(_notesFocusNode);
+                                });
+                              },
+                              child: new Text(
+                                _exchangeController.text == ""
+                                    ? "Exchange"
+                                    : _exchangeController.text,
+                                style: Theme.of(context).textTheme.body2.apply(
+                                    color: _exchangeController.text == ""
+                                        ? Theme.of(context).hintColor
+                                        : validColor),
+                              ),
                             ),
                           ),
                         ),
+
                         new Container(
                           width: MediaQuery.of(context).size.width * 0.50,
                           child: new TextField(
@@ -561,44 +637,59 @@ class TransactionSheetState extends State<TransactionSheet> {
                                 border: InputBorder.none, hintText: "Notes"),
                           ),
                         ),
+
+
                       ],
-                    )
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.025),
+                    Container(
+                      decoration: new BoxDecoration(
+                          boxShadow: [
+                            //background color of box
+                            BoxShadow(
+                              color: Colors.blueGrey[100].withOpacity(0.7),
+                              blurRadius: 40.0, // soften the shadow
+                              spreadRadius: 8.010, //extend the shadow
+                              offset: Offset(
+                                3.0, // Move to right 10  horizontally
+                                3.0, // Move to bottom 10 Vertically
+                              ),
+                            )
+                          ],
+                        gradient: new LinearGradient(
+                          colors: [ const Color(0xFFFAFAFA),
+                        const Color(0xFFe7eff9),],
+                        ),
+                          borderRadius: BorderRadius.all(Radius.circular(15))
+                      ),
+                      child: FlatButton(
+                        child: new Text('Confirm'),
+                        onPressed: _handleSave
+                      ),
+                    ),
                   ]),
+
               new Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   widget.editMode
                       ? new Container(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: new FloatingActionButton(
-                        child: Icon(Icons.delete),
-                        backgroundColor: Colors.red,
-                        foregroundColor:
-                        Theme.of(context).iconTheme.color,
-                        elevation: 2.0,
-                        onPressed: _deleteTransaction),
-                  )
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: new FloatingActionButton(
+                              child: Icon(Icons.delete),
+                              backgroundColor: Colors.red,
+                              foregroundColor:
+                                  Theme.of(context).iconTheme.color,
+                              elevation: 2.0,
+                              onPressed: _deleteTransaction),
+                        )
                       : new Container(),
-                  new Container(
-                    child: new FloatingActionButton(
-                        child: Icon(Icons.check),
-                        elevation: symbol != null &&
-                            quantity != null &&
-                            exchange != null &&
-                            price != null
-                            ? 4.0
-                            : 0.0,
-                        backgroundColor: symbol != null &&
-                            quantity != null &&
-                            exchange != null &&
-                            price != null
-                            ? Colors.green
-                            : Theme.of(context).disabledColor,
-                        foregroundColor: Theme.of(context).iconTheme.color,
-                        onPressed: _handleSave),
-                  )
+
                 ],
               )
-            ]));
+            ])),
+      ),
+    );
   }
 }

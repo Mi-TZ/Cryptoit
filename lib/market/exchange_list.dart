@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'coin_exchange_stats.dart';
 import '../main.dart';
 
 class ExchangeListItem extends StatelessWidget {
@@ -12,11 +10,7 @@ class ExchangeListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new InkWell(
         onTap: () {
-          Navigator.of(context).push(new MaterialPageRoute(
-              builder: (BuildContext context) => new CoinMarketStats(
-                exchangeData: exchangeDataSnapshot,
-                e: exchangeDataSnapshot["MARKET"],
-              )));
+
         },
         child: new Container(
           padding: const EdgeInsets.all(6.0),

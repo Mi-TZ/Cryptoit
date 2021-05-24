@@ -26,21 +26,31 @@ class _newsState extends State<news> {
     return SafeArea(
       child: Scaffold(
           backgroundColor: Color(0xFFF2F3F8),
-          body: ListView(
-            padding: EdgeInsets.all(kDefaultPadding),
-            children: <Widget>[
+          body: Container(
+          height: MediaQuery.of(context).size.height ,
+          decoration: new BoxDecoration(
+          gradient: new LinearGradient(
+          colors: [
+          const Color(0xFFFAFAFA),
+          const Color(0xFFe7eff9),
+          ],
+          ),),
+            child: ListView(
+              padding: EdgeInsets.all(kDefaultPadding),
+              children: <Widget>[
 
-              Padding(
-                padding: const EdgeInsets.only(left: 18),
-                child: Text(
-                  "Crypto News",
-                  style: TextStyle(fontSize: 28)
-                  ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 18),
+                  child: Text(
+                    "Crypto News",
+                    style: TextStyle(fontSize: 28)
+                    ),
+                ),
 
-              SizedBox(height: 15,),
-              _buildArticle(context, itemWidth, itemHeight)
-            ],
+                SizedBox(height: 15,),
+                _buildArticle(context, itemWidth, itemHeight)
+              ],
+            ),
           )
       ),
     );

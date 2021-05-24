@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:provider/provider.dart';
-import 'package:cryptoo/marketpage.dart';
 import 'package:cryptoo/news/newsmain.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'marketpage.dart';
 import 'news/data/news_api_service.dart';
 import 'tags.dart';
 import 'settings_page.dart';
+import 'addcrypto.dart';
 import 'package:cryptoo/news/newsmain.dart';
 
 const double appBarHeight = 48.0;
@@ -108,7 +109,9 @@ void main() async {
 
   runApp(new TraceApp());
 }
+handleUpdate() {
 
+}
 numCommaParse(numString) {
   if (shortenOn) {
     String str = num.parse(numString ?? "0")
@@ -253,11 +256,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
           children: <Widget>[
 
             Tabs(
-              savePreferences: savePreferences,
+              savePreferences: savePreferences,handleUpdate: handleUpdate,
             ),
             marketpage(
               savePreferences: savePreferences,
             ),
+            addcryp(),
             news(),
             SettingsPage(
               savePreferences: savePreferences,

@@ -46,8 +46,24 @@ class TransactionItem extends StatelessWidget {
       exchange = "Aggregated";
     }
 
-    return new Card(
-      elevation: 2.0,
+    return new Container(
+      margin: new EdgeInsets.all(10.0),
+      width: MediaQuery.of(context).size.width * 0.06,
+      height: MediaQuery.of(context).size.height * 0.1,
+      decoration: BoxDecoration(
+          boxShadow: [ //background color of box
+            BoxShadow(
+              color: Colors.grey[100],
+              blurRadius: 50.0, // soften the shadow
+              spreadRadius: 0.0, //extend the shadow
+              offset: Offset(
+                3.0, // Move to right 10  horizontally
+                3.0, // Move to bottom 10 Vertically
+              ),
+            )
+          ],
+          color: Colors.white.withOpacity(0.7),
+          borderRadius: BorderRadius.all(Radius.circular(15))),
       child: new ListTile(
         isThreeLine: false,
         contentPadding: const EdgeInsets.all(8.0),

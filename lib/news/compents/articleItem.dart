@@ -59,10 +59,13 @@ class ArticleItem extends StatelessWidget {
                       SizedBox(
                         height: 2,
                       ),
-                      Container(
-                        child: Text(
-                          "${article.content.substring(0, (article.title.length/2).floor())}...",
-                          style: TextStyle(color: Colors.black54, fontSize: 14),
+                      Expanded(
+                        child: Container(
+                          width: 100,
+                          child: Text(
+                            "${article.content.substring(0, (article.content.length/2).floor())}...",
+                            style: TextStyle(color: Colors.black54, fontSize: 14),
+                          ),
                         ),
                       ),
                     ],

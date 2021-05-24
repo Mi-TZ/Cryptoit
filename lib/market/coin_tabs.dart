@@ -74,13 +74,14 @@ class CoinDetailsState extends State<CoinDetails>
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     return SafeArea(
       child: new Scaffold(
           backgroundColor: Color(0xFFF2F3F8),
           appBar: new PreferredSize(
             preferredSize: const Size.fromHeight(110.0),
-
-
             child: new AppBar(
               iconTheme: IconThemeData(
                 color: Colors.black, //change your color here
@@ -95,7 +96,6 @@ class CoinDetailsState extends State<CoinDetails>
                   fontSize: 25,
                 ),
               ),
-
               bottom: new PreferredSize(
                 preferredSize: const Size.fromHeight(5.0),
                 child: new Container(
@@ -111,18 +111,7 @@ class CoinDetailsState extends State<CoinDetails>
               ),
               actions: <Widget>[
                 widget.enableTransactions
-                    ? new IconButton(
-                        icon: new Icon(Icons.add),
-                        onPressed: () {
-                          _scaffoldKey.currentState
-                              .showBottomSheet((BuildContext context) {
-                            return new TransactionSheet(() {
-                              setState(() {
-                                _refreshTransactions();
-                              });
-                            }, marketListData);
-                          });
-                        })
+                    ? Container()
                     : new Container(),
               ],
             ),
@@ -339,7 +328,7 @@ class CoinDetailsState extends State<CoinDetails>
                           ),
                           SizedBox(
                               height:
-                              MediaQuery.of(context).size.height * 0.004),
+                                  MediaQuery.of(context).size.height * 0.004),
                           new Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -433,14 +422,12 @@ class CoinDetailsState extends State<CoinDetails>
                             ),
                           )
                         ],
-    gradient: new LinearGradient(
-    colors: [
-    const Color(0xFFFAFAFA),
-    const Color(0xFFe7eff9),
-    ],
-    ),
-
-
+                        gradient: new LinearGradient(
+                          colors: [
+                            const Color(0xFFFAFAFA),
+                            const Color(0xFFe7eff9),
+                          ],
+                        ),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(60),
                             topRight: Radius.circular(60))),
@@ -545,7 +532,9 @@ class CoinDetailsState extends State<CoinDetails>
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 0,),
+                          padding: const EdgeInsets.only(
+                            left: 0,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -557,7 +546,9 @@ class CoinDetailsState extends State<CoinDetails>
                                 itemBuilder: (BuildContext context) {
                                   List<PopupMenuEntry<dynamic>> options = [];
                                   for (int i = 0;
-                                      i < ohlcvWidthOptions[historyTotal].length;
+                                      i <
+                                          ohlcvWidthOptions[historyTotal]
+                                              .length;
                                       i++) {
                                     options.add(new PopupMenuItem(
                                         child: new Text(
@@ -609,8 +600,8 @@ class CoinDetailsState extends State<CoinDetails>
                                       value: ["day", "365", "1Y", "1"]),
                                 ],
                                 onSelected: (result) {
-                                  changeHistory(
-                                      result[0], result[1], result[2], result[3]);
+                                  changeHistory(result[0], result[1], result[2],
+                                      result[3]);
                                 },
                               )),
                             ],
@@ -655,7 +646,6 @@ class CoinDetailsState extends State<CoinDetails>
         ],
       )),
       bottomNavigationBar: new BottomAppBar(
-
         elevation: appBarElevation,
         child: generalStats != null
             ? new QuickPercentChangeBar(snapshot: generalStats)
@@ -796,7 +786,6 @@ class CoinDetailsState extends State<CoinDetails>
                                 ),
                               ),
                               new Container(
-
                                 width: MediaQuery.of(context).size.width *
                                     columnProps[2],
                                 child: new Row(
@@ -954,61 +943,83 @@ class CoinDetailsState extends State<CoinDetails>
     return new CustomScrollView(
       slivers: <Widget>[
         new SliverList(
-            delegate: new SliverChildListDelegate(<Widget>[
-          new Container(
-            padding: const EdgeInsets.all(10.0),
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Column(
+          delegate: new SliverChildListDelegate(
+            <Widget>[
+              new Container(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text("Total Value",
-                        style: Theme.of(context).textTheme.caption),
-                    new Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        new Text("\$" + numCommaParse(value.toStringAsFixed(2)),
+                    RotatedBox(
+                      quarterTurns: 1,
+                      child: Container(
+                        width: ((190 / 1.2)),
+                        height: 4,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            HexColor('#009ffd'),
+                            HexColor('#2a2a72').withOpacity(0.5),
+                          ]),
+                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        new Text("Total Value",
+                            style: Theme.of(context).textTheme.caption),
+                        new Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            new Text(
+                                "\$" + numCommaParse(value.toStringAsFixed(2)),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .body2
+                                    .apply(fontSizeFactor: 1.5,color: Colors.grey[800])),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01,
+                        ),
+                        new Text("Total Net",
+                            style: Theme.of(context).textTheme.caption),
+                        Text(
+                            num.parse(holdings.toStringAsPrecision(9))
+                                    .toString() +
+                                " " +
+                                symbol,
                             style: Theme.of(context)
                                 .textTheme
                                 .body2
-                                .apply(fontSizeFactor: 2.2)),
+                                .apply(fontSizeFactor: 1.5,color: Colors.grey[800])),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01,
+                        ),
+                        new Text("Total Cost",
+                            style: Theme.of(context).textTheme.caption),
+                        Text("\$" + numCommaParse(cost.toStringAsFixed(2)),
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .body2
+                                .apply(fontSizeFactor: 1.5,color: Colors.grey[800])),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03,
+                        ),
                       ],
                     ),
                   ],
                 ),
-                new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    new Text("Total Net",
-                        style: Theme.of(context).textTheme.caption),
-                    Text(
-                        num.parse(holdings.toStringAsPrecision(9)).toString() +
-                            " " +
-                            symbol,
-                        style: Theme.of(context)
-                            .textTheme
-                            .body2
-                            .apply(fontSizeFactor: 1.2)),
-                  ],
-                ),
-                new Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    new Text("Total Cost",
-                        style: Theme.of(context).textTheme.caption),
-                    new Text("\$" + numCommaParse(cost.toStringAsFixed(2)),
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .body2
-                            .apply(fontSizeFactor: 1.5))
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ])),
+        ),
         new SliverList(
             delegate: new SliverChildBuilderDelegate(
                 (context, index) => new TransactionItem(
