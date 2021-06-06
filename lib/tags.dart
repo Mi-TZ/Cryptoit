@@ -1,18 +1,11 @@
 import 'dart:async';
-
+import 'package:cryptoo/portfolio/transaction_sheet.dart';
 import 'package:flutter/rendering.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'ballance.dart';
-import 'card.dart';
-
-import 'marketpage.dart';
-import 'portfolio/port_tabs.dart';
 import 'main.dart';
 import 'portfolio_item.dart';
-import 'portfolio/transaction_sheet.dart';
-import 'market_coin_item.dart';
+
 
 class Tabs extends StatefulWidget {
   Tabs({this.savePreferences, this.handleUpdate});
@@ -27,28 +20,6 @@ class Tabs extends StatefulWidget {
 class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   TextEditingController _textController = new TextEditingController();
 
-  _openTransaction() {
-    setState(() {
-      sheetOpen = true;
-    });
-    _scaffoldKey.currentState
-        .showBottomSheet((BuildContext context) {
-          return new TransactionSheet(
-            () {
-              setState(() {
-                _makePortfolioDisplay();
-              });
-            },
-            marketListData,
-          );
-        })
-        .closed
-        .whenComplete(() {
-          setState(() {
-            sheetOpen = false;
-          });
-        });
-  }
 
   List filteredMarketData;
 
@@ -104,6 +75,8 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
     _sortPortfolioDisplay();
   }
 
+
+
   @override
   void initState() {
     super.initState();
@@ -134,7 +107,6 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
 
   Future<Null> _refreshPortfolioPage() async {
     await getMarketData();
-    getGlobalData();
     _makePortfolioDisplay();
     setState(() {});
   }
@@ -344,17 +316,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
                                 new Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 8.0)),
-                                new RaisedButton(
-                                  onPressed: _openTransaction,
-                                  child: new Text("New Transaction",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .body2
-                                          .apply(
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color)),
-                                )
+
                               ],
                             ))),
               ],

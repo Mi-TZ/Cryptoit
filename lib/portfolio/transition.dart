@@ -67,15 +67,7 @@ class TransactionItem extends StatelessWidget {
       child: new ListTile(
         isThreeLine: false,
         contentPadding: const EdgeInsets.all(8.0),
-        onTap: () => showBottomSheet(
-            context: context,
-            builder: (context) => new TransactionSheet(
-              refreshPage,
-              marketListData,
-              editMode: true,
-              snapshot: snapshot,
-              symbol: symbol,
-            )),
+
         leading: snapshot["quantity"] >= 0
             ? new Icon(Icons.add_circle, color: Colors.green, size: 28.0)
             : new Icon(Icons.remove_circle, color: Colors.red, size: 28.0),

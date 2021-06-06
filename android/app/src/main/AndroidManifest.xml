@@ -2,7 +2,7 @@
     package="com.udmitz.cryptoo">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="cryptoo"
+        android:label="Cryptoit"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -38,5 +38,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+       <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-9746660700461224~3668498029"/>
     </application>
 </manifest>

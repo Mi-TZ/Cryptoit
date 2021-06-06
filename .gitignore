@@ -1,0 +1,8 @@
+child: new SliverList(
+                                delegate: new SliverChildBuilderDelegate(
+                                    (BuildContext context, int index) =>
+                                        new CoinListItem(filteredMarketData[index],
+                                            marketColumnProps),
+                                    childCount: filteredMarketData == null
+                                        ? 0
+                                        : filteredMarketData.length)),

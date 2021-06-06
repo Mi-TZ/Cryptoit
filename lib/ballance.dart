@@ -3,229 +3,196 @@ import 'dart:math' as math;
 
 import 'main.dart';
 
-class MediterranesnDietView extends StatefulWidget {
-
-  @override
-  _MediterranesnDietViewState createState() => _MediterranesnDietViewState();
-}
-
-
-class _MediterranesnDietViewState extends State<MediterranesnDietView> {
-
-
-
+class MediterranesnDietView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-     return Container(
-       child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 24, right: 24, top: 16, bottom: 18),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: FitnessAppTheme.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8.0),
-                        bottomLeft: Radius.circular(8.0),
-                        bottomRight: Radius.circular(8.0),
-                        topRight: Radius.circular(68.0)),
-                    boxShadow: [
-                      //background color of box
-                      BoxShadow(
-                        color: Colors.blueGrey[100].withOpacity(0.5),
-                        blurRadius: 40.0, // soften the shadow
-                        spreadRadius: 8.010, //extend the shadow
-                        offset: Offset(
-                          3.0, // Move to right 10  horizontally
-                          3.0, // Move to bottom 10 Vertically
-                        ),
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding:
-                        const EdgeInsets.only(top: 16, left: 16, right: 16),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, top: 4),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                         RotatedBox(
-                                           quarterTurns: 1,
-                                           child: Container(
-                                              height: 3,
-                                              width: 60,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                totalPortfolioStats["percent_change_1h"] >=
-                                                    0
-                                                    ? HexColor('#87A0E5').withOpacity(0.2)
-                                                    : Colors.red,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4.0)),
-                                              ),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Container(
-                                                    width: ((70 / 1.2)),
-                                                    height: 4,
-                                                    decoration: BoxDecoration(
-                                                      gradient: LinearGradient(colors: [
-                                                        HexColor('#87A0E5'),
-                                                        HexColor('#87A0E5')
-                                                            .withOpacity(0.5),
-                                                      ]),
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(4.0)),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                         ),
-
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 4, bottom: 0),
-                                                child: Text(
-                                                  'Total Value',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-
-
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 20,
-                                                    letterSpacing: -0.1,
-                                                    color: FitnessAppTheme.grey
-                                                        .withOpacity(0.5),
-                                                  ),
-                                                ),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                                children: <Widget>[
-                                                  SizedBox(
-                                                    width: 1,
-                                                    height: 35,
-
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                    const EdgeInsets.only(
-                                                        left: 4, bottom: 3),
-                                                    child: Text(
-                                                      "\$" +
-                                                          numCommaParse(totalPortfolioStats["value_usd"]
-                                                              .toStringAsFixed(2)),
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(
-
-                                                        fontWeight:
-                                                        FontWeight.w600,
-                                                        fontSize: 23,
-                                                        color: FitnessAppTheme
-                                                            .darkerText,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-
-                                  ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 18),
+      child: Container(
+        decoration: BoxDecoration(
+          color: FitnessAppTheme.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              bottomLeft: Radius.circular(8.0),
+              bottomRight: Radius.circular(8.0),
+              topRight: Radius.circular(68.0)),
+          boxShadow: [
+            //background color of box
+            BoxShadow(
+              color: Colors.blueGrey[100].withOpacity(0.5),
+              blurRadius: 40.0, // soften the shadow
+              spreadRadius: 8.010, //extend the shadow
+              offset: Offset(
+                3.0, // Move to right 10  horizontally
+                3.0, // Move to bottom 10 Vertically
+              ),
+            )
+          ],
+        ),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              RotatedBox(
+                                quarterTurns: 1,
+                                child: Container(
+                                  height: 3,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                    color: totalPortfolioStats[
+                                                "percent_change_1h"] >=
+                                            0
+                                        ? HexColor('#87A0E5').withOpacity(0.2)
+                                        : Colors.red,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4.0)),
+                                  ),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        width: ((70 / 1.2)),
+                                        height: 4,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(colors: [
+                                            HexColor('#87A0E5'),
+                                            HexColor('#87A0E5')
+                                                .withOpacity(0.5),
+                                          ]),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(4.0)),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 16),
-                              child: Center(
-                                child : Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 7),
-                                  decoration: BoxDecoration(
-                                      color:
-                                      totalPortfolioStats["percent_change_1h"] >=
-                                          0
-                                          ? Colors.green
-                                          : Colors.red,
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(30))),
-                                  child: Text(
-                                    totalPortfolioStats["percent_change_1h"] >= 0
-                                        ? "+" +
-                                        totalPortfolioStats["percent_change_1h"]
-                                            .toStringAsFixed(2) +
-                                        "%"
-                                        : totalPortfolioStats["percent_change_1h"]
-                                        .toStringAsFixed(2) +
-                                        "%",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 4, bottom: 0),
+                                      child: Text(
+                                        'Total Value',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20,
+                                          letterSpacing: -0.1,
+                                          color: FitnessAppTheme.grey
+                                              .withOpacity(0.5),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                )
-
-                              ),
-                              ),
-
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 24, right: 24, top: 8, bottom: 8),
-                        child: Container(
-                          height: 2,
-                          decoration: BoxDecoration(
-                            color: FitnessAppTheme.background,
-                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: 1,
+                                          height: 35,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 4, bottom: 3),
+                                          child: Text(
+                                            "\$" +
+                                                numCommaParse(
+                                                    totalPortfolioStats[
+                                                            "value_usd"]
+                                                        .toStringAsFixed(2)),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 23,
+                                              color: FitnessAppTheme.darkerText,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Center(
+                        child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                      decoration: BoxDecoration(
+                          color: totalPortfolioStats["percent_change_1h"] >= 0
+                              ? Colors.green
+                              : Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Text(
+                        totalPortfolioStats["percent_change_1h"] >= 0
+                            ? "+" +
+                                totalPortfolioStats["percent_change_1h"]
+                                    .toStringAsFixed(2) +
+                                "%"
+                            : totalPortfolioStats["percent_change_1h"]
+                                    .toStringAsFixed(2) +
+                                "%",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 24, right: 24, top: 8, bottom: 16),
-                        child: Row(
-                          children: <Widget>[
-
-
-                          ],
-                        ),
-                      )
-                    ],
+                    )),
                   ),
+                ],
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 8),
+              child: Container(
+                height: 2,
+                decoration: BoxDecoration(
+                  color: FitnessAppTheme.background,
+                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 ),
               ),
-     );
-
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 8, bottom: 16),
+              child: Row(
+                children: <Widget>[],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
+
 class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 

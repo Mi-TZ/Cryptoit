@@ -1,9 +1,14 @@
+import 'dart:math';
+import 'package:cryptoo/adstate.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:slider_button/slider_button.dart';
 
 import '../main.dart';
 
@@ -19,7 +24,6 @@ class TransactionSheet extends StatefulWidget {
 
   final Function loadPortfolio;
   final List marketListData;
-
   final bool editMode;
   final Map snapshot;
   final String symbol;
@@ -29,6 +33,10 @@ class TransactionSheet extends StatefulWidget {
 }
 
 class TransactionSheetState extends State<TransactionSheet> {
+  InterstitialAd interstitialAd;
+  int _toggleValue = 0;
+  int value = 0;
+  bool positive = false;
   TextEditingController _symbolController = new TextEditingController();
   TextEditingController _priceController = new TextEditingController();
   TextEditingController _quantityController = new TextEditingController();
@@ -61,6 +69,9 @@ class TransactionSheetState extends State<TransactionSheet> {
   String exchange;
 
   Map totalQuantities;
+
+  InterstitialAd _interstitialAd;
+  bool isLoaded;
 
   _makeTotalQuantities() {
     totalQuantities = {};
@@ -238,9 +249,20 @@ class TransactionSheetState extends State<TransactionSheet> {
           portfolioMap = jsonContent;
           jsonFile.writeAsStringSync(json.encode(jsonContent));
 
-          print("WRITE SUCCESS");
+          Fluttertoast.showToast(
+              msg: "Transaction Completed",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black54,
+              textColor: Colors.white,
+              fontSize: 16.0);
 
-          Navigator.of(context).pop();
+          _priceController.clear();
+          _quantityController.clear();
+          _exchangeController.clear();
+          _notesController.clear();
+          _symbolController.clear();
         } else {
           jsonFile.createSync();
           jsonFile.writeAsStringSync("{}");
@@ -248,55 +270,6 @@ class TransactionSheetState extends State<TransactionSheet> {
       });
       widget.loadPortfolio();
     }
-  }
-
-  _deleteTransaction() async {
-    await getApplicationDocumentsDirectory().then((Directory directory) {
-      File jsonFile = new File(directory.path + "/portfolio.json");
-      if (jsonFile.existsSync()) {
-        Map jsonContent = json.decode(jsonFile.readAsStringSync());
-
-        int index = 0;
-        for (Map transaction in jsonContent[widget.symbol]) {
-          if (transaction.toString() == widget.snapshot.toString()) {
-            jsonContent[widget.symbol].removeAt(index);
-            break;
-          }
-          index += 1;
-        }
-
-        if (jsonContent[widget.symbol].isEmpty) {
-          jsonContent.remove(widget.symbol);
-        }
-
-        portfolioMap = jsonContent;
-        Navigator.of(context).pop();
-        jsonFile.writeAsStringSync(json.encode(jsonContent));
-
-        Scaffold.of(context).showSnackBar(new SnackBar(
-          duration: new Duration(seconds: 5),
-          content: new Text("Transaction Deleted."),
-          action: new SnackBarAction(
-            label: "Undo",
-            onPressed: () {
-              if (jsonContent[widget.symbol] != null) {
-                jsonContent[widget.symbol].add(widget.snapshot);
-              } else {
-                jsonContent[widget.symbol] = [];
-                jsonContent[widget.symbol].add(widget.snapshot);
-              }
-
-              jsonFile.writeAsStringSync(json.encode(jsonContent));
-
-              portfolioMap = jsonContent;
-
-              widget.loadPortfolio();
-            },
-          ),
-        ));
-      }
-    });
-    widget.loadPortfolio();
   }
 
   Future<Null> _getExchangeList() async {
@@ -344,6 +317,7 @@ class TransactionSheetState extends State<TransactionSheet> {
   @override
   void initState() {
     super.initState();
+
     symbolTextColor = errorColor;
     quantityTextColor = errorColor;
     priceTextColor = errorColor;
@@ -355,132 +329,165 @@ class TransactionSheetState extends State<TransactionSheet> {
     _makeEpoch();
   }
 
+  void loadInterstitial() async {
+    interstitialAd = InterstitialAd(
+      // adUnitId: 'ca-app-pub-9746660700461224/1972272971',
+      request: AdRequest(),
+      listener: AdListener(onAdLoaded: (Ad ad) {
+        interstitialAd.show();
+      }, onAdClosed: (Ad ad) {
+        interstitialAd.dispose();
+      }),
+    );
+
+    interstitialAd.load();
+  }
+
   @override
   Widget build(BuildContext context) {
     validColor = Theme.of(context).textTheme.body2.color;
     return SafeArea(
-      child: Scaffold(
-        body: new Container(
-          alignment: Alignment.topLeft,
-            height: MediaQuery.of(context).size.height ,
-            decoration: new BoxDecoration(
+      child: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Scaffold(
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return new AlertDialog(
+                    title: new Text(
+                      "How Transaction Works",
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                    content: new Text(
+                      "* Enter Coin Symbol in Field eg : BTC,ETH,DOGE. \n* To Add Coins In Your Portfolio Select Buy. \n* To Delete Coins From Your Portfolio Select Sell. \n* After Swiping The Coin You Entered Will Be Added To Portfolio.",
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 15,
+                      ),
+                    ),
+                    actions: <Widget>[
+                      new FlatButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: new Text("okay!"))
+                    ],
+                  );
+                },
+              );
+            },
+            label: const Icon(Icons.info_outline_rounded),
+            backgroundColor: Colors.blueAccent.withOpacity(0.5),
+          ),
+          body: Container(
+            decoration: BoxDecoration(
               gradient: new LinearGradient(
                 colors: [
                   const Color(0xFFFAFAFA),
                   const Color(0xFFe7eff9),
                 ],
               ),
-              border: new Border(
-                  top: new BorderSide(
-                      color: Theme.of(context).bottomAppBarColor)),
-              color: Theme.of(context).primaryColor,
             ),
-            padding: const EdgeInsets.only(
-                top: 45.0, bottom: 8.0, right: 16.0, left: 26.0),
-            child:
-                new Row(mainAxisAlignment: MainAxisAlignment.start, children: <
-                    Widget>[
-              new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.025),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 1,
-                      ),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 38,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
                         child: Text(
-                          'Add Transaction',
+                          'Transaction',
                           style: TextStyle(
                             color: Colors.black87,
                             fontSize: 35,
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.019),
-                    new Row(
-                      children: <Widget>[
-                        new Text(
-                          "Buy",
-                          style: TextStyle(fontSize: 30,color: Colors.black54),
-                        ),
-                        new Radio(
-                            value: 0,
-                            groupValue: radioValue,
-                            onChanged: _handleRadioValueChange,
-                            activeColor: Colors.green),
-                        new Text(
-                          "Sell",
-                          style: TextStyle(fontSize: 30,color: Colors.black54),
-                        ),
-                        new Radio(
-                            value: 1,
-                            groupValue: radioValue,
-                            onChanged: _handleRadioValueChange,
-                            activeColor: Colors.redAccent),
-                        new Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6.0, vertical: 10)),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        //background color of box
+                        BoxShadow(
+                          color: Colors.blueGrey[100].withOpacity(0.5),
+                          blurRadius: 40.0, // soften the shadow
+                          spreadRadius: 8.010, //extend the shadow
+                          offset: Offset(
+                            3.0, // Move to right 10  horizontally
+                            3.0, // Move to bottom 10 Vertically
+                          ),
+                        )
                       ],
-                    ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.025),
-                    Row(
-                      children: [
+                      gradient: new LinearGradient(
+                        colors: [
+                          const Color(0xFFFAFAFA),
+                          const Color(0xFFe7eff9),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(60),
+                          topRight: Radius.circular(60))),
+                  padding: const EdgeInsets.only(
+                      left: 22.0, right: 35.0, top: 30.0, bottom: 0),
+                  child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SizedBox(
+                            height:
+                                MediaQuery.of(context).size.height * 0.001),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Date : ',style: TextStyle(fontSize: 22,color: Colors.black54),),
-                            new GestureDetector(
-                              onTap: () => _selectDate(),
-                              child: new Text(
-                                  pickedDate.month.toString() +
-                                      "/" +
-                                      pickedDate.day.toString() +
-                                      "/" +
-                                      pickedDate.year.toString().substring(2),
-                                  style: TextStyle(fontSize: 16,color: Colors.black54)),
+                            AnimatedToggle(
+                              values: ['BUY', 'SELL'],
+                              onToggleCallback: (value) {
+                                setState(() {
+                                  _handleRadioValueChange(value);
+                                });
+                              },
+                              buttonColor: Colors.blue.shade400,
+                              backgroundColor: const Color(0xFFB5C1CC),
+                              textColor: const Color(0xFFFFFFFF),
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    new Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0)),
-
-                    Row(
-                      children: [
-                        Text('Time : ',style: TextStyle(fontSize: 22,color: Colors.black54)),
-                        new GestureDetector(
-                          onTap: () => _selectTime(),
-                          child: new Text(
-                            (pickedTime.hourOfPeriod == 0
-                                    ? "12"
-                                    : pickedTime.hourOfPeriod.toString()) +
-                                ":" +
-                                (pickedTime.minute > 9
-                                    ? pickedTime.minute.toString()
-                                    : "0" + pickedTime.minute.toString()) +
-                                (pickedTime.hour >= 12 ? "PM" : "AM"),
-                            style: TextStyle(fontSize: 16,color: Colors.black54),
-                          ),
-                        ),
-                      ],
-                    ),
-                    new Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0)),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.025),
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
+                        SizedBox(
+                            height:
+                                MediaQuery.of(context).size.height * 0.045),
                         new Container(
-                          width: MediaQuery.of(context).size.width * 0.25,
+                          width: MediaQuery.of(context).size.width * 0.5,
                           padding: const EdgeInsets.only(right: 4.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.7),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(18.0),
+                            ),
+                            boxShadow: [
+                              //background color of box
+                              BoxShadow(
+                                color: Colors.blueGrey[100].withOpacity(0.7),
+                                blurRadius: 40.0, // soften the shadow
+                                spreadRadius: 8.010, //extend the shadow
+                                offset: Offset(
+                                  3.0, // Move to right 10  horizontally
+                                  3.0, // Move to bottom 10 Vertically
+                                ),
+                              )
+                            ],
+                          ),
                           child: new TextField(
                             controller: _symbolController,
                             autocorrect: false,
@@ -488,27 +495,44 @@ class TransactionSheetState extends State<TransactionSheet> {
                             onChanged: _checkValidSymbol,
                             onSubmitted: (_) => FocusScope.of(context)
                                 .requestFocus(_quantityFocusNode),
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .apply(color: Colors.black54),
                             decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                  left: 15, bottom: 11, top: 11, right: 15),
                               labelText: "Enter Coin",
-                              fillColor: Colors.black54,
-                              hintText: "Symbol",
-                              border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(25.0),
-                              ),
+
                               //fillColor: Colors.green
                             ),
-
-                            ),
                           ),
+                        ),
                         SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.025),
+                            height:
+                                MediaQuery.of(context).size.height * 0.025),
                         new Container(
-                          width: MediaQuery.of(context).size.width * 0.2,
+                          width: MediaQuery.of(context).size.width * 0.5,
                           padding: const EdgeInsets.only(right: 4.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.7),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(18.0),
+                            ),
+                            boxShadow: [
+                              //background color of box
+                              BoxShadow(
+                                color: Colors.blueGrey[100].withOpacity(0.7),
+                                blurRadius: 40.0, // soften the shadow
+                                spreadRadius: 8.010, //extend the shadow
+                                offset: Offset(
+                                  3.0, // Move to right 10  horizontally
+                                  3.0, // Move to bottom 10 Vertically
+                                ),
+                              )
+                            ],
+                          ),
                           child: new TextField(
                             focusNode: _quantityFocusNode,
                             controller: _quantityController,
@@ -516,29 +540,47 @@ class TransactionSheetState extends State<TransactionSheet> {
                             onChanged: _checkValidQuantity,
                             onSubmitted: (_) => FocusScope.of(context)
                                 .requestFocus(_priceFocusNode),
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .apply(color: quantityTextColor),
-                            keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: TextInputType.numberWithOptions(
+                                decimal: true),
                             decoration: new InputDecoration(
-                              labelText: "Quantity",
-                              fillColor: Colors.black54,
-                              hintText: "Quantity",
-                              border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(25.0),
-                              ),
-                              //fillColor: Colors.green
-                            ),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                contentPadding: EdgeInsets.only(
+                                    left: 15, bottom: 11, top: 11, right: 15),
+                                labelText: "Quantity",
+                                fillColor: Colors.black54
+
+                                //fillColor: Colors.green
+                                ),
                           ),
                         ),
-
                         SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.025),
+                            height:
+                                MediaQuery.of(context).size.height * 0.025),
                         new Container(
-                          width: MediaQuery.of(context).size.width * 0.3,
+                          width: MediaQuery.of(context).size.width * 0.5,
                           padding: const EdgeInsets.only(right: 4.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.7),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(18.0),
+                            ),
+                            boxShadow: [
+                              //background color of box
+                              BoxShadow(
+                                color: Colors.blueGrey[100].withOpacity(0.7),
+                                blurRadius: 40.0, // soften the shadow
+                                spreadRadius: 8.010, //extend the shadow
+                                offset: Offset(
+                                  3.0, // Move to right 10  horizontally
+                                  3.0, // Move to bottom 10 Vertically
+                                ),
+                              )
+                            ],
+                          ),
                           child: new TextField(
                             focusNode: _priceFocusNode,
                             controller: _priceController,
@@ -550,145 +592,182 @@ class TransactionSheetState extends State<TransactionSheet> {
                                 .textTheme
                                 .body2
                                 .apply(color: priceTextColor),
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: TextInputType.numberWithOptions(
+                                decimal: true),
                             decoration: new InputDecoration(
-                                labelText: "Price",
-                                fillColor: Colors.black54,
-                                hintText: "Price",
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(25.0),
-                                ),
+                                border: InputBorder.none,
                                 prefixText: "\$",
                                 prefixStyle: Theme.of(context)
                                     .textTheme
                                     .body2
-                                    .apply(color: priceTextColor)),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.025),
+                                    .apply(color: priceTextColor),
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                contentPadding: EdgeInsets.only(
+                                    left: 15, bottom: 11, top: 11, right: 15),
+                                labelText: "Price",
+                                fillColor: Colors.black54
 
-                    new Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left:11.0),
-                          child: new Container(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            child: new PopupMenuButton(
-                              itemBuilder: (BuildContext context) {
-                                List<PopupMenuEntry<dynamic>> options = [
-                                  new PopupMenuItem(
-                                    child: new Text("Aggregated"),
-                                    value: "CCCAGG",
+                                //fillColor: Colors.green
+                                ),
+                          ),
+                        ),
+
+
+                        SizedBox(
+                            height:
+                                MediaQuery.of(context).size.height * 0.045),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                child: SliderButton(
+                                  action: () {
+                                    loadInterstitial();
+                                    _handleSave();
+                                  },
+                                  label: Text(
+                                    "Slide To Confirm",
+                                    style: TextStyle(
+                                        color: Color(0xff4a4a4a),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 17),
                                   ),
-                                ];
-                                if (exchangesList != null &&
-                                    exchangesList.isEmpty != true) {
-                                  options.add(new PopupMenuDivider());
-                                  exchangesList.forEach(
-                                      (exchange) => options.add(new PopupMenuItem(
-                                            child: new Text(exchange),
-                                            value: exchange,
-                                          )));
-                                }
-                                return options;
-                              },
-                              onSelected: (selected) {
-                                setState(() {
-                                  exchange = selected;
-                                  if (selected == "CCCAGG") {
-                                    _exchangeController.text = "Aggregated";
-                                  } else {
-                                    _exchangeController.text = selected;
-                                  }
-                                  FocusScope.of(context)
-                                      .requestFocus(_notesFocusNode);
-                                });
-                              },
-                              child: new Text(
-                                _exchangeController.text == ""
-                                    ? "Exchange"
-                                    : _exchangeController.text,
-                                style: Theme.of(context).textTheme.body2.apply(
-                                    color: _exchangeController.text == ""
-                                        ? Theme.of(context).hintColor
-                                        : validColor),
+                                  icon: Icon(
+                                    Icons.check,
+                                    color: Colors.blueAccent,
+                                  ),
+                                  width: 260,
+                                  buttonColor: Color(0xFFFAFAFA),
+                                  boxShadow: BoxShadow(
+                                    color: Colors.blueGrey[100],
+                                    blurRadius: 8,
+                                  ),
+                                  backgroundColor:
+                                      Colors.white.withOpacity(0.7),
+                                  baseColor: Colors.blueAccent,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
+                        SizedBox(
+                            height:
+                                MediaQuery.of(context).size.height * 0.095),
+                      ]),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-                        new Container(
-                          width: MediaQuery.of(context).size.width * 0.50,
-                          child: new TextField(
-                            focusNode: _notesFocusNode,
-                            controller: _notesController,
-                            autocorrect: true,
-                            textCapitalization: TextCapitalization.none,
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .apply(color: validColor),
-                            keyboardType: TextInputType.text,
-                            decoration: new InputDecoration(
-                                border: InputBorder.none, hintText: "Notes"),
-                          ),
-                        ),
+class AnimatedToggle extends StatefulWidget {
+  final List<String> values;
+  final ValueChanged onToggleCallback;
+  final Color backgroundColor;
+  final Color buttonColor;
+  final Color textColor;
 
+  AnimatedToggle({
+    @required this.values,
+    @required this.onToggleCallback,
+    this.backgroundColor = const Color(0xFFe7e7e8),
+    this.buttonColor = const Color(0xFFFFFFFF),
+    this.textColor = const Color(0xFF000000),
+  });
+  @override
+  _AnimatedToggleState createState() => _AnimatedToggleState();
+}
 
-                      ],
-                    ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.025),
-                    Container(
-                      decoration: new BoxDecoration(
-                          boxShadow: [
-                            //background color of box
-                            BoxShadow(
-                              color: Colors.blueGrey[100].withOpacity(0.7),
-                              blurRadius: 40.0, // soften the shadow
-                              spreadRadius: 8.010, //extend the shadow
-                              offset: Offset(
-                                3.0, // Move to right 10  horizontally
-                                3.0, // Move to bottom 10 Vertically
-                              ),
-                            )
-                          ],
-                        gradient: new LinearGradient(
-                          colors: [ const Color(0xFFFAFAFA),
-                        const Color(0xFFe7eff9),],
-                        ),
-                          borderRadius: BorderRadius.all(Radius.circular(15))
+class _AnimatedToggleState extends State<AnimatedToggle> {
+  bool initialPosition = true;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.7,
+      height: MediaQuery.of(context).size.height * 0.055,
+      margin: EdgeInsets.all(20),
+      child: Stack(
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              initialPosition = !initialPosition;
+              var index = 0;
+              if (!initialPosition) {
+                index = 1;
+              }
+              widget.onToggleCallback(index);
+              setState(() {});
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: MediaQuery.of(context).size.height * 0.13,
+              decoration: ShapeDecoration(
+                color: widget.backgroundColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width * 0.1),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(
+                  widget.values.length,
+                  (index) => Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.05),
+                    child: Text(
+                      widget.values[index],
+                      style: TextStyle(
+                        fontFamily: 'Rubik',
+                        fontSize: MediaQuery.of(context).size.width * 0.045,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFFe7e7e8),
                       ),
-                      child: FlatButton(
-                        child: new Text('Confirm'),
-                        onPressed: _handleSave
-                      ),
                     ),
-                  ]),
-
-              new Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  widget.editMode
-                      ? new Container(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: new FloatingActionButton(
-                              child: Icon(Icons.delete),
-                              backgroundColor: Colors.red,
-                              foregroundColor:
-                                  Theme.of(context).iconTheme.color,
-                              elevation: 2.0,
-                              onPressed: _deleteTransaction),
-                        )
-                      : new Container(),
-
-                ],
-              )
-            ])),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          AnimatedAlign(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.decelerate,
+            alignment:
+                initialPosition ? Alignment.centerLeft : Alignment.centerRight,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.33,
+              height: MediaQuery.of(context).size.height * 0.13,
+              decoration: ShapeDecoration(
+                color:
+                    initialPosition ? Colors.green.shade500 : Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width * 0.1),
+                ),
+              ),
+              child: Text(
+                initialPosition ? widget.values[0] : widget.values[1],
+                style: TextStyle(
+                  fontFamily: 'Rubik',
+                  fontSize: MediaQuery.of(context).size.width * 0.045,
+                  color: widget.textColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              alignment: Alignment.center,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -22,16 +22,8 @@ class DetailScreen extends StatelessWidget {
           elevation: 0,
           backgroundColor: Color(0xFFF2F3F8),
           centerTitle: true,
-          title: Text("Crypto News", style: TextStyle(fontWeight: FontWeight.w500)),
-          leading: Container(
-            margin: EdgeInsets.only(top: 10, left: 10),
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: kTitleColor, width: 2)
-            ),
-            child: IconButton(
+          title: Text("Cryptoit News", style: TextStyle(fontWeight: FontWeight.w500,color: Colors.black)),
+          leading:  IconButton(
               icon: Icon(Icons.arrow_back_ios),
               color: kTitleColor,
               iconSize: 20.0,
@@ -39,17 +31,8 @@ class DetailScreen extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
-          ),
           actions: [
-            Container(
-              margin: EdgeInsets.only(top: 10, right: 10),
-              width: 45,
-              height: 30,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: kTitleColor, width: 2)
-              ),
-              child: IconButton(
+            IconButton(
                 icon: Icon(Icons.share),
                 color: kTitleColor,
                 iconSize: 20.0,
@@ -58,7 +41,7 @@ class DetailScreen extends StatelessWidget {
                   print("yes");
                 },
               ),
-            ),
+
           ],
         ),
 
@@ -66,7 +49,7 @@ class DetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
-              backgroundColor: Colors.deepPurpleAccent,
+              backgroundColor: Colors.blueAccent,
               child: Icon(Icons.open_in_new),
               heroTag: "go",
               onPressed: () async{
@@ -74,14 +57,7 @@ class DetailScreen extends StatelessWidget {
                   launch(article.url);
               },
             ),
-            SizedBox(height: 10,),
-            FloatingActionButton(
-              backgroundColor: Colors.deepPurpleAccent,
-              child: Icon(Icons.thumb_up),
-              onPressed: (){
-              },
-              heroTag: "like",
-            ),
+
           ],
         ),
         body: Container(
@@ -90,7 +66,12 @@ class DetailScreen extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-            color: Colors.white60,
+              gradient: new LinearGradient(
+                colors: [
+                  const Color(0xFFFAFAFA),
+                  const Color(0xFFe7eff9),
+                ],
+              ),
             borderRadius: BorderRadius.circular(30)
           ),
           child: ListView(
@@ -112,24 +93,18 @@ class DetailScreen extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 5),
-                        child: Card(
-                          color: Colors.white,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40)
-                          ),
-                          semanticContainer: true,
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: Container(
+
                           child: Image.asset(
-                            "assets/images/btc.png",
-                            height: 40,
-                            width: 40,
+                            "assets/group.png",
+                            height: 50,
+                            width: 50,
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
                       Text(
-                        "Cryptoit",
+                        "News :",
                         style:TextStyle(fontSize: 14)
                         ),
 
@@ -144,21 +119,17 @@ class DetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      article.name,
-                      style: TextStyle(fontSize: 24)
 
-                    ),
-                    SizedBox(height: 15,),
+                    SizedBox(height: 10,),
                     Text(
                       article.title,
-                      style:TextStyle(fontSize: 18)
+                      style:TextStyle(fontSize: 22)
                       ),
 
                     SizedBox(height: 20,),
                     Text(
                       article.content,
-                      style: TextStyle(fontSize: 16)
+                      style: TextStyle(fontSize: 16,color: Colors.black54)
 
                     ),
                   ],

@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:cryptoo/news/data/news_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_skeleton/flutter_skeleton.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
+import '../adstate.dart';
 import 'article.dart';
 import 'package:cryptoo/news/compents/articleItem.dart';
 import 'package:chopper/chopper.dart';
@@ -124,7 +126,7 @@ class _newsState extends State<news> {
               mainAxisSpacing: 10,
               crossAxisCount: 1,
               scrollDirection: Axis.vertical,
-              childAspectRatio: (itemWidth / itemHeight) * 3.5,
+              childAspectRatio: (itemWidth / itemHeight) * 1.5,
               children: articles
           );
 
@@ -142,102 +144,7 @@ class _newsState extends State<news> {
               crossAxisCount: 1,
               scrollDirection: Axis.vertical,
               children: [
-                CardSkeleton(
-                  style: SkeletonStyle(
-                    theme: SkeletonTheme.Light,
-                    isShowAvatar: false,
-                    isCircleAvatar: false,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    barCount: 5,
-                    colors: [Colors.grey[100]],
-                    backgroundColor: Color(0xffffffff),
-                    isAnimation: false,
-                  ),
-                ),
-                CardSkeleton(
-                  style: SkeletonStyle(
-                    theme: SkeletonTheme.Light,
-                    isShowAvatar: false,
-                    isCircleAvatar: false,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    barCount: 5,
-                    colors: [Colors.grey[100]],
-                    backgroundColor: Color(0xffffffff),
-                    isAnimation: false,
-                  ),
-                ),
-                CardSkeleton(
-                  style: SkeletonStyle(
-                    theme: SkeletonTheme.Light,
-                    isShowAvatar: false,
-                    isCircleAvatar: false,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    barCount: 5,
-                    colors: [Colors.grey[100]],
-                    backgroundColor: Color(0xffffffff),
-                    isAnimation: false,
-                  ),
-                ),
-                CardSkeleton(
-                  style: SkeletonStyle(
-                    theme: SkeletonTheme.Light,
-                    isShowAvatar: false,
-                    isCircleAvatar: false,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    barCount: 5,
-                    colors: [Colors.grey[100]],
-                    backgroundColor: Color(0xffffffff),
-                    isAnimation: false,
-                  ),
-                ),
-                CardSkeleton(
-                  style: SkeletonStyle(
-                    theme: SkeletonTheme.Light,
-                    isShowAvatar: false,
-                    isCircleAvatar: false,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    barCount: 5,
-                    colors: [Colors.grey[100]],
-                    backgroundColor: Color(0xffffffff),
-                    isAnimation: false,
-                  ),
-                ),
-                CardSkeleton(
-                  style: SkeletonStyle(
-                    theme: SkeletonTheme.Light,
-                    isShowAvatar: false,
-                    isCircleAvatar: false,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    barCount: 5,
-                    colors: [Colors.grey[100]],
-                    backgroundColor: Color(0xffffffff),
-                    isAnimation: false,
-                  ),
-                ),
-                CardSkeleton(
-                  style: SkeletonStyle(
-                    theme: SkeletonTheme.Light,
-                    isShowAvatar: false,
-                    isCircleAvatar: false,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    barCount: 5,
-                    colors: [Colors.grey[100]],
-                    backgroundColor: Color(0xffffffff),
-                    isAnimation: false,
-                  ),
-                ),
-                CardSkeleton(
-                  style: SkeletonStyle(
-                    theme: SkeletonTheme.Light,
-                    isShowAvatar: false,
-                    isCircleAvatar: false,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    barCount: 5,
-                    colors: [Colors.grey[100]],
-                    backgroundColor: Color(0xffffffff),
-                    isAnimation: false,
-                  ),
-                ),
+
                 CardSkeleton(
                   style: SkeletonStyle(
                     theme: SkeletonTheme.Light,

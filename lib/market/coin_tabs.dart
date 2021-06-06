@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:cryptoo/candlesticks.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+
 import '../ballance.dart';
 
 import '../main.dart';
@@ -77,55 +77,53 @@ class CoinDetailsState extends State<CoinDetails>
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    return SafeArea(
-      child: new Scaffold(
-          backgroundColor: Color(0xFFF2F3F8),
-          appBar: new PreferredSize(
-            preferredSize: const Size.fromHeight(110.0),
-            child: new AppBar(
-              iconTheme: IconThemeData(
-                color: Colors.black, //change your color here
-              ),
-              backgroundColor: Color(0xFFF2F3F8),
-              elevation: 0.001,
-              centerTitle: true,
-              title: Text(
-                'Cryptoit',
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 25,
-                ),
-              ),
-              bottom: new PreferredSize(
-                preferredSize: const Size.fromHeight(5.0),
-                child: new Container(
-                    height: 43.0,
-                    child: new TabBar(
-                      controller: _tabController,
-                      indicatorColor: Colors.black54,
-                      indicatorWeight: 0.1,
-                      unselectedLabelColor: Colors.black54,
-                      labelColor: Colors.black54,
-                      tabs: _tabBarChildren,
-                    )),
-              ),
-              actions: <Widget>[
-                widget.enableTransactions
-                    ? Container()
-                    : new Container(),
-              ],
+    return new Scaffold(
+        backgroundColor: Color(0xFFF2F3F8),
+        appBar: new PreferredSize(
+          preferredSize: const Size.fromHeight(110.0),
+          child: new AppBar(
+            iconTheme: IconThemeData(
+              color: Colors.black, //change your color here
             ),
+            backgroundColor: Color(0xFFF2F3F8),
+            elevation: 0.001,
+            centerTitle: true,
+            title: Text(
+              'Cryptoit',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 25,
+              ),
+            ),
+            bottom: new PreferredSize(
+              preferredSize: const Size.fromHeight(5.0),
+              child: new Container(
+                  height: 43.0,
+                  child: new TabBar(
+                    controller: _tabController,
+                    indicatorColor: Colors.black54,
+                    indicatorWeight: 0.1,
+                    unselectedLabelColor: Colors.black54,
+                    labelColor: Colors.black54,
+                    tabs: _tabBarChildren,
+                  )),
+            ),
+            actions: <Widget>[
+              widget.enableTransactions
+                  ? Container()
+                  : new Container(),
+            ],
           ),
-          body: new TabBarView(
-              controller: _tabController,
-              children: widget.enableTransactions
-                  ? [
-                      aggregateStats(context),
-                      exchangeListPage(context),
-                      transactionPage(context)
-                    ]
-                  : [aggregateStats(context), exchangeListPage(context)])),
-    );
+        ),
+        body: new TabBarView(
+            controller: _tabController,
+            children: widget.enableTransactions
+                ? [
+                    aggregateStats(context),
+                    exchangeListPage(context),
+                    transactionPage(context)
+                  ]
+                : [aggregateStats(context), exchangeListPage(context)]));
   }
 
   Map generalStats;
@@ -264,14 +262,17 @@ class CoinDetailsState extends State<CoinDetails>
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(left: 4, bottom: 0),
-                            child: Text(
-                              widget.snapshot["CoinInfo"]["FullName"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 30,
-                                letterSpacing: -0.1,
-                                color: FitnessAppTheme.grey.withOpacity(0.8),
+                            child: Hero(
+                              tag: 'oof',
+                              child: Text(
+                                widget.snapshot["CoinInfo"]["FullName"],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 30,
+                                  letterSpacing: -0.1,
+                                  color: FitnessAppTheme.grey.withOpacity(0.8),
+                                ),
                               ),
                             ),
                           ),
@@ -302,7 +303,7 @@ class CoinDetailsState extends State<CoinDetails>
                               ),
                               SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.3),
+                                      MediaQuery.of(context).size.width * 0.25),
                               Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 7),
@@ -946,7 +947,7 @@ class CoinDetailsState extends State<CoinDetails>
           delegate: new SliverChildListDelegate(
             <Widget>[
               new Container(
-                padding: const EdgeInsets.only(left: 20.0),
+                padding: const EdgeInsets.only(left: 20.0,top: 15),
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

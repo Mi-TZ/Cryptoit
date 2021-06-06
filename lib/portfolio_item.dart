@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'main.dart';
 import 'market/coin_tabs.dart';
 import 'market_coin_item.dart';
 
 class PortfolioListItem extends StatelessWidget {
+  InterstitialAd interstitialAd;
   PortfolioListItem(this.snapshot, this.columnProps);
   final columnProps;
   final Map snapshot;
+
+  void loadInterstitial () async {
+    interstitialAd = InterstitialAd(
+      // adUnitId: 'ca-app-pub-9746660700461224/1972272971',
+      request: AdRequest(),
+      listener: AdListener(
+          onAdLoaded: (Ad ad) {
+            interstitialAd.show();
+          },
+          onAdClosed: (Ad ad) {
+            interstitialAd.dispose();
+          }
+      ),
+    );
+
+    interstitialAd.load();
+
+  }
 
   _getImage() {
     if (assetImages.contains(snapshot["symbol"].toLowerCase())) {
@@ -19,10 +39,13 @@ class PortfolioListItem extends StatelessWidget {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return new InkWell(
         onTap: () {
+          loadInterstitial();
           Navigator.of(context).push(new MaterialPageRoute(
               builder: (BuildContext context) => new CoinDetails(
                   snapshot: snapshot, enableTransactions: true)));

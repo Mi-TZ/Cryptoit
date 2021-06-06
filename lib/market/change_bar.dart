@@ -70,7 +70,7 @@ class QuickPercentChangeBar extends StatelessWidget {
           border: new Border(
             top: new BorderSide(color: Theme.of(context).bottomAppBarColor),
           ),
-          color: Theme.of(context).primaryColor),
+          color: Color(0xFFe7eff9)),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
