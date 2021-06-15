@@ -1,23 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:cryptoo/tweets/dashboard.dart';
+import 'portanalysis.dart';
 import 'package:after_layout/after_layout.dart';
-import 'package:cryptoo/portfolio/transaction_sheet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:cryptoo/news/newsmain.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'marketpage.dart';
-import 'news/data/news_api_service.dart';
 import 'tags.dart';
 import 'settings_page.dart';
 
@@ -206,18 +203,15 @@ class TraceAppState extends State<TraceApp>  with SingleTickerProviderStateMixin
       systemNavigationBarDividerColor: Color(0xFFe7eff9),
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
-    return Provider(
-      create: (_) => NewsApiService.create(),
-      dispose: (_, NewsApiService service) => service.client.dispose(),
-      child: new MaterialApp(
+    return (
+       new MaterialApp(
         title: "Trace",
         home:new Splash(),
         theme: ThemeData(
           fontFamily: 'Jost',
         ),
 
-      ),
-    );
+       ));
   }
 }
 
@@ -309,18 +303,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> with SingleTickerProvid
           ),
         ),
       ),
-      globalFooter: SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: ElevatedButton(
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),),
-          child: const Text(
-            'Let\s go right away!',
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-          onPressed: () => _onIntroEnd(context),
-        ),
-      ),
+
       pages: [
         PageViewModel(
           title: "Learn , Trade & Practice",
@@ -436,6 +419,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   Function get loadPortfolio => null;
 
+  Function get makePortfolioDisplay => null;
+
   @override
   void initState() {
     super.initState();
@@ -466,8 +451,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
             marketpage(
               savePreferences: savePreferences,
             ),
-            TransactionSheet(loadPortfolio, marketListData),
-            news(),
+
+            PortfolioTabs(makePortfolioDisplay),
+           DashboardView(),
             SettingsPage(
               savePreferences: savePreferences,
             ),
@@ -482,7 +468,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
           Icon(Icons.home_rounded, color: Color(0xFF415860), size: 30),
           Icon(Icons.monetization_on_rounded,
               color: Color(0xFF415860), size: 30),
-          Icon(Icons.add_circle_rounded, color: Color(0xFF415860), size: 30),
+
+          Icon(Icons.analytics_rounded, color: Color(0xFF415860), size: 30),
+
           Icon(Icons.article_rounded, color: Color(0xFF415860), size: 30),
           Icon(Icons.settings, color: Color(0xFF415860), size: 30),
         ],

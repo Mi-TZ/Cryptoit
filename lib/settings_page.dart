@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:package_info/package_info.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -115,17 +115,11 @@ class SettingsPageState extends State<SettingsPage> {
 
   String version = "";
   String buildNumber = "";
-  _getVersion() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    setState(() {
-      version = packageInfo.version;
-      buildNumber = packageInfo.buildNumber;
-    });
-  }
+
 
   void initState() {
     super.initState();
-    _getVersion();
+
   }
 
   @override
@@ -219,20 +213,25 @@ class SettingsPageState extends State<SettingsPage> {
             ),
             new Container(
 
-              child: new ListTile(
-                title: new RichText(
-                    text: new TextSpan(
-                        text: "",
-                        style: Theme.of(context).textTheme.subhead,
-                        children: <TextSpan>[
-                          TextSpan(text: "Developed By", style: Theme.of(context).textTheme.subhead
-                              .apply(color: Colors.black, fontWeightDelta: 2))
-                        ]
-                    )
-                ),
-                subtitle: new Text("Udm Developers"),
-                leading: new Icon(Icons.favorite,color: Colors.redAccent,),
-                onTap: () => _launchUrl("https://play.google.com/store/apps/developer?id=UDm+developers"),
+              child: Column(
+                children: [
+                  new ListTile(
+                    title: new RichText(
+                        text: new TextSpan(
+                            text: "",
+                            style: Theme.of(context).textTheme.subhead,
+                            children: <TextSpan>[
+                              TextSpan(text: "Developed By", style: Theme.of(context).textTheme.subhead
+                                  .apply(color: Colors.black, fontWeightDelta: 2))
+                            ]
+                        )
+                    ),
+                    subtitle: new Text("Udm Developers"),
+                    leading: new Icon(Icons.favorite,color: Colors.redAccent,),
+                    onTap: () => _launchUrl("https://play.google.com/store/apps/developer?id=UDm+developers"),
+                  ),
+
+                ],
               ),
             ),
           ],

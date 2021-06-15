@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cryptoo/portfolio/transaction_sheet.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'ballance.dart';
@@ -182,6 +181,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
                       ],
                     ),
                   ),
+
                   SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   MediterranesnDietView(),
                   new Container(

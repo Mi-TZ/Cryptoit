@@ -13,7 +13,7 @@ class PortfolioListItem extends StatelessWidget {
 
   void loadInterstitial () async {
     interstitialAd = InterstitialAd(
-      // adUnitId: 'ca-app-pub-9746660700461224/1972272971',
+      adUnitId: 'ca-app-pub-9746660700461224/1972272971',
       request: AdRequest(),
       listener: AdListener(
           onAdLoaded: (Ad ad) {
@@ -108,26 +108,28 @@ class PortfolioListItem extends StatelessWidget {
                               .apply(color: Theme.of(context).hintColor))
                     ],
                   )),
-              new Container(
-                width: MediaQuery.of(context).size.width * columnProps[2],
-                child: new Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    new Text(
-                        "\$" + normalizeNumNoCommas(snapshot["price_usd"])),
-                    new Padding(padding: const EdgeInsets.only(bottom: 4.0)),
-                    new Text(
-                        (snapshot["percent_change_24h"] ?? 0) >= 0
-                            ? "+" + (snapshot["percent_change_24h"] ?? 0)
-                            .toStringAsFixed(2) + "%"
-                            : (snapshot["percent_change_24h"] ?? 0)
-                            .toStringAsFixed(2) + "%",
-                        style: Theme.of(context).primaryTextTheme.body1.apply(
-                            color: (snapshot["percent_change_24h"] ?? 0) >= 0
-                                ? Colors.green
-                                : Colors.red)),
-                  ],
+              Flexible(
+                child: new Container(
+                  width: MediaQuery.of(context).size.width * columnProps[2],
+                  child: new Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      new Text(
+                          "\$" + normalizeNumNoCommas(snapshot["price_usd"])),
+                      new Padding(padding: const EdgeInsets.only(bottom: 4.0)),
+                      new Text(
+                          (snapshot["percent_change_24h"] ?? 0) >= 0
+                              ? "+" + (snapshot["percent_change_24h"] ?? 0)
+                              .toStringAsFixed(2) + "%"
+                              : (snapshot["percent_change_24h"] ?? 0)
+                              .toStringAsFixed(2) + "%",
+                          style: Theme.of(context).primaryTextTheme.body1.apply(
+                              color: (snapshot["percent_change_24h"] ?? 0) >= 0
+                                  ? Colors.green
+                                  : Colors.red)),
+                    ],
+                  ),
                 ),
               ),
             ],

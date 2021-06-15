@@ -24,7 +24,7 @@ class CoinListItem extends StatelessWidget {
 
   void loadInterstitial () async {
     interstitialAd = InterstitialAd(
-      // adUnitId: 'ca-app-pub-9746660700461224/1972272971',
+      adUnitId: 'ca-app-pub-9746660700461224/1972272971',
       request: AdRequest(),
       listener: AdListener(
           onAdLoaded: (Ad ad) {
