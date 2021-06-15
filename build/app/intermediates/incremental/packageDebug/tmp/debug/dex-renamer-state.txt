@@ -1,4 +1,0 @@
-#Mon May 24 14:35:26 IST 2021
-base.0=C\:\\Users\\MiTZ\\AndroidStudioProjects\\cryptoo\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
